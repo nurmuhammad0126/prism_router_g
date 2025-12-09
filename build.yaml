@@ -1,0 +1,18 @@
+targets:
+  $default:
+    builders:
+      prism_router|prism_router:
+        enabled: true
+        options:
+          generate_for:
+            - lib/**
+            - example/lib/**
+
+builders:
+  prism_router:
+    import: "package:prism_router/builder.dart"
+    builder_factories: ["prismScreenBuilder"]
+    build_extensions: {".dart": [".prism_router.g.dart"]}
+    auto_apply: dependents
+    build_to: source
+    applies_builders: ["source_gen|combining_builder"]

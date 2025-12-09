@@ -4,18 +4,12 @@ import 'package:prism_router/prism_router.dart';
 /// {@template settings_screen}
 /// SettingsScreen widget.
 /// {@endtemplate}
+@PrismScreen(name: 'settings', tags: {'settings'})
 class SettingsScreen extends StatelessWidget {
   /// {@macro settings_screen}
-  const SettingsScreen({
-    required this.data1,
-    required this.data2,
-    required this.data3,
-    super.key,
-  });
+  const SettingsScreen({required this.data, super.key});
 
-  final String data1;
-  final String data2;
-  final String data3;
+  final String data;
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -27,6 +21,6 @@ class SettingsScreen extends StatelessWidget {
       ),
       title: const Text('Settings'),
     ),
-    body: SafeArea(child: Center(child: Text('data: $data1'))),
+    body: SafeArea(child: Center(child: Text('data: $data'))),
   );
 }

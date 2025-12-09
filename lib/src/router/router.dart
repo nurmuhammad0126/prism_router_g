@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 
+import '../annotations/prism_screen.dart';
 import '../navigator/prism_page.dart';
 import '../navigator/types.dart';
 import 'back_button_dispatcher.dart';
@@ -23,17 +24,25 @@ class PrismRouter {
     String? restorationScopeId,
   }) {
     assert(initialStack.isNotEmpty, 'initialStack cannot be empty');
+    final generatedRoutes =
+        routes ?? (PrismScreenRegistry.hasEntries ? PrismScreenRegistry.routeDefinitions : null);
+    final generatedPages =
+        pages ??
+        (PrismScreenRegistry.hasEntries ? PrismScreenRegistry.pages : null);
+
+    final resolvedInitialStack = initialStack;
+
     final controller = PrismController(
-      initialPages: initialStack,
+      initialPages: resolvedInitialStack,
       guards: guards,
     );
     // Auto-generate routes from pages or initialStack if not provided
     final routeMap =
-        routes != null
-            ? {for (final route in routes) route.name: route}
+        generatedRoutes != null
+            ? {for (final route in generatedRoutes) route.name: route}
             : {
               // Use pages list if provided, otherwise use initialStack
-              for (final page in (pages ?? initialStack))
+              for (final page in (generatedPages ?? initialStack))
                 page.name: page.routeDefinition,
             };
     final delegate = PrismRouterDelegate(
@@ -44,7 +53,7 @@ class PrismRouter {
     );
     final parser = PrismRouteInformationParser(
       routeBuilders: routeMap,
-      initialPages: initialStack,
+      initialPages: resolvedInitialStack,
     );
     // initialRouteInformation is used as fallback if browser URL is empty
     // Parser will parse actual browser URL if it exists

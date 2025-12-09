@@ -3,13 +3,16 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:prism_router/prism_router.dart';
 
-import '../../common/routes/routes.dart';
+import '../details/details_screen.dart';
+import '../profile/profile_screen.dart';
+import '../settings/settings_screen.dart';
 
 PrismStateObserver? prismStateObserver;
 
 /// {@template home_screen}
 /// HomeScreen widget.
 /// {@endtemplate}
+@PrismScreen(name: 'home', initial: true)
 class HomeScreen extends StatefulWidget {
   /// {@macro home_screen}
   const HomeScreen({super.key});
@@ -47,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(
             icon: const Icon(Icons.refresh),
             tooltip: 'Reset to home',
-            onPressed: () => context.setStack([const HomePage()]),
+            onPressed: () => context.setStack([const HomeScreen()]),
           ),
         ],
       ),
@@ -74,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
               subtitle: 'Pushes a custom routed page with transition override',
               onTap:
                   () => context.push(
-                    SettingsPage(
+                    SettingsScreen(
                       data: 'Updated @ ${DateTime.now().toIso8601String()}',
                     ),
                   ),
@@ -83,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
               icon: Icons.person,
               title: 'Push profile',
               subtitle: 'Simple page that can open details',
-              onTap: () => context.push(const ProfilePage()),
+              onTap: () => context.push(const ProfileScreen()),
             ),
             _NavigationTile(
               icon: Icons.description,
@@ -91,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
               subtitle: 'Pass data arguments & show tag-based back handling',
               onTap:
                   () => context.push(
-                    DetailsPage(
+                    DetailsScreen(
                       userId: '42',
                       note: 'Opened directly from home',
                     ),

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import '../navigator/prism_page.dart';
 
 class EncodedRouteSegment {
@@ -9,15 +11,7 @@ class EncodedRouteSegment {
 
 String encodeLocation(List<PrismPage> pages) {
   if (pages.isEmpty) return '/';
-  // Only encode page names in the URL. Arguments are *not* serialized into the
-  // location to keep paths clean:
-  //   /home/profile/details
-  // instead of
-  //   /home/profile/details~<base64-args>
-  //
-  // This means arguments are not restored on hard refresh, but the route
-  // hierarchy (which screen you're on) is always preserved.
-  final segments = pages.map((page) => page.name).join('/');
+  final segments = pages.map(_encodeSegment).join('/');
   return '/$segments';
 }
 
@@ -63,7 +57,30 @@ List<EncodedRouteSegment> decodeUri(Uri uri) {
           .toList();
 
   if (segments.isEmpty) return const [];
-  return segments
-      .map((name) => EncodedRouteSegment(name, const <String, Object?>{}))
-      .toList();
+  return segments.map(_decodeSegment).toList();
+}
+
+String _encodeSegment(PrismPage page) {
+  if (page.arguments.isEmpty) return page.name;
+  final encodedArgs = base64Url.encode(utf8.encode(jsonEncode(page.arguments)));
+  return '${page.name}~$encodedArgs';
+}
+
+EncodedRouteSegment _decodeSegment(String raw) {
+  final parts = raw.split('~');
+  final name = parts.first;
+  if (parts.length == 1) {
+    return EncodedRouteSegment(name, const <String, Object?>{});
+  }
+  final encodedArgs = parts.sublist(1).join('~');
+  try {
+    final decoded = utf8.decode(base64Url.decode(encodedArgs));
+    final map = jsonDecode(decoded);
+    if (map is Map<String, dynamic>) {
+      return EncodedRouteSegment(name, map);
+    }
+  } on Object {
+    // Fall through to empty arguments on parse errors.
+  }
+  return EncodedRouteSegment(name, const <String, Object?>{});
 }

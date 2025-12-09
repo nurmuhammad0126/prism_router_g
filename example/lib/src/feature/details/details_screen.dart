@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:prism_router/prism_router.dart';
 
-import '../../common/routes/routes.dart';
+import '../home/home_screen.dart';
 
 /// {@template details_screen}
 /// Light-weight screen that showcases reading data passed through the page.
 /// {@endtemplate}
+@PrismScreen(name: 'details', tags: {'details'})
 class DetailsScreen extends StatelessWidget {
   /// {@macro details_screen}
   const DetailsScreen({required this.userId, required this.note, super.key});
@@ -25,7 +26,7 @@ class DetailsScreen extends StatelessWidget {
         IconButton(
           tooltip: 'Back to home',
           icon: const Icon(Icons.home),
-          onPressed: () => context.pushAndRemoveAll(const HomePage()),
+          onPressed: () => context.pushAndRemoveAll(const HomeScreen()),
         ),
       ],
     ),

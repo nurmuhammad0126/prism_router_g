@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:prism_router/prism_router.dart';
 
-import '../../common/routes/routes.dart';
+import '../details/details_screen.dart';
 
 /// {@template profile_screen}
 /// Demonstrates pushing another page and removing itself via `pop`.
 /// {@endtemplate}
+@PrismScreen(name: 'profile')
 class ProfileScreen extends StatelessWidget {
   /// {@macro profile_screen}
   const ProfileScreen({super.key});
@@ -34,7 +35,10 @@ class ProfileScreen extends StatelessWidget {
             label: const Text('Open details for user #007'),
             onPressed:
                 () => context.push(
-                  DetailsPage(userId: '007', note: 'Opened from profile'),
+                  const DetailsScreen(
+                    userId: '007',
+                    note: 'Opened from profile',
+                  ),
                 ),
           ),
         ],

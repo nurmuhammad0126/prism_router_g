@@ -24,7 +24,6 @@ class _AppState extends State<App> with RouteStateMixin {
   void initState() {
     super.initState();
     _routerConfig = PrismRouter.router(
-      pages: appPages, // Use pages instead of routes - much simpler!
       initialStack: initialPages,
       guards: guards,
     );

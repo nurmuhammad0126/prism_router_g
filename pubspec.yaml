@@ -2,7 +2,7 @@ name: prism_router
 description: "A declarative Navigator 2.0 helper."
 version: 0.1.0
 
-homepage: https://github.com/nurmuhammad0126/prism_router
+homepage: https://github.com/nurmuhammad0126/prism_router_g
 
 environment:
   sdk: ^3.7.2
@@ -12,10 +12,12 @@ dependencies:
   flutter:
     sdk: flutter
   web: ^0.5.0
+  build: ^2.4.1
+  source_gen: ^1.5.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
-
-
+  build_runner: ^2.4.13
+  analyzer: 6.4.1
